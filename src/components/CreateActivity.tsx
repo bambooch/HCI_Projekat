@@ -23,6 +23,9 @@ export function CreateActivity({ onBack, onCreateActivity }: CreateActivityProps
 
   const sports = ['Fudbal', 'Košarka', 'Tenis', 'Odbojka', 'Trčanje', 'Plivanje'];
 
+  // Get today's date in YYYY-MM-DD format to prevent selection of past dates
+  const today = new Date().toISOString().split('T')[0];
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.sport || !formData.location || !formData.date || !formData.time || !formData.maxParticipants) {
@@ -50,6 +53,10 @@ export function CreateActivity({ onBack, onCreateActivity }: CreateActivityProps
     setFormData(prev => ({ ...prev, [field]: value }));
   };
 
+  const handleSportChange = (value: string) => {
+    handleInputChange('sport', value);
+  };
+
   return (
     <div className="max-w-2xl mx-auto px-4 py-6">
       <div className="flex items-center justify-between mb-6">
@@ -73,7 +80,7 @@ export function CreateActivity({ onBack, onCreateActivity }: CreateActivityProps
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
             <Label htmlFor="sport">Tip Sporta</Label>
-            <Select value={formData.sport} onValueChange={(value) => handleInputChange('sport', value)}>
+            <Select value={formData.sport} onValueChange={handleSportChange}>
               <SelectTrigger className="mt-1">
                 <SelectValue placeholder="Izaberi sport" />
               </SelectTrigger>
@@ -105,6 +112,7 @@ export function CreateActivity({ onBack, onCreateActivity }: CreateActivityProps
                 id="date"
                 type="date"
                 value={formData.date}
+                min={today}
                 onChange={(e) => handleInputChange('date', e.target.value)}
                 className="mt-1"
               />
