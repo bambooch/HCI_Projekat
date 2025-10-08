@@ -4,6 +4,7 @@ import { Dashboard } from './components/Dashboard';
 import { CreateActivity } from './components/CreateActivity';
 import { ActivityDetails } from './components/ActivityDetails';
 import { UserProfile } from './components/UserProfile';
+import { Notifications } from './components/Notifications';
 import { Activity, ViewType } from './types';
 
 export default function App() {
@@ -49,6 +50,12 @@ export default function App() {
             onBack={() => handleViewChange('dashboard')}
           />
         );
+      case 'notifications':
+        return (
+          <Notifications
+            onBack={() => handleViewChange('dashboard')}
+          />
+        );
       default:
         return <Dashboard onViewActivity={handleViewActivity} />;
     }
@@ -56,7 +63,7 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      {currentView !== 'activity' && (
+      {currentView !== 'activity' && currentView !== 'notifications' && (
         <Header currentView={currentView} onViewChange={handleViewChange} />
       )}
       {renderCurrentView()}

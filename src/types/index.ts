@@ -29,4 +29,15 @@ export interface ChatMessage {
   timestamp: string;
 }
 
-export type ViewType = 'dashboard' | 'create' | 'activity' | 'profile';
+export interface Notification {
+  id: string;
+  type: 'join' | 'message' | 'reminder' | 'update';
+  title: string;
+  message: string;
+  timestamp: string;
+  read: boolean;
+  activityId?: string;
+  activityTitle?: string;
+}
+
+export type ViewType = 'dashboard' | 'create' | 'activity' | 'profile' | 'notifications';
