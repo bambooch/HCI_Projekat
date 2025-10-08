@@ -39,7 +39,7 @@ export function FilterBar({
         </div>
         
         <Select value={selectedSport} onValueChange={onSportChange}>
-          <SelectTrigger className="w-48 bg-white">
+          <SelectTrigger className="w-full sm:w-48 bg-white">
             <SelectValue placeholder="Svi sportovi" />
           </SelectTrigger>
           <SelectContent>
@@ -52,7 +52,7 @@ export function FilterBar({
         </Select>
 
         <Select value={selectedLocation} onValueChange={onLocationChange}>
-          <SelectTrigger className="w-48 bg-white">
+          <SelectTrigger className="w-full sm:w-48 bg-white">
             <SelectValue placeholder="Sve lokacije" />
           </SelectTrigger>
           <SelectContent>
@@ -68,7 +68,7 @@ export function FilterBar({
           type="date"
           value={selectedDate}
           onChange={(e) => onDateChange(e.target.value)}
-          className="w-48 bg-white"
+          className="w-full sm:w-48 bg-white"
         />
       </div>
     </div>

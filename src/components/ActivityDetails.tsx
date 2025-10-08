@@ -23,9 +23,9 @@ export function ActivityDetails({ activity, onBack }: ActivityDetailsProps) {
     <div className="max-w-6xl mx-auto px-4 py-6">
       {/* Header */}
       <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center space-x-8">
-          <h1 className="font-semibold text-lg">SportConnect</h1>
-          <nav className="flex space-x-6">
+        <div className="flex items-center space-x-4 sm:space-x-8">
+          <h1 className="font-semibold text-base sm:text-lg">SportConnect</h1>
+          <nav className="hidden md:flex space-x-6">
             <button
               onClick={onBack}
               className="text-gray-600 hover:text-gray-900"
@@ -37,8 +37,8 @@ export function ActivityDetails({ activity, onBack }: ActivityDetailsProps) {
           </nav>
         </div>
         
-        <div className="flex items-center space-x-3">
-          <Button variant="ghost" size="sm">
+        <div className="flex items-center space-x-2 sm:space-x-3">
+          <Button variant="ghost" size="sm" className="hidden md:flex">
             Notifikacije
           </Button>
           <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center">

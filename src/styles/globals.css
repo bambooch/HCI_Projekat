@@ -187,3 +187,22 @@
 html {
   font-size: var(--font-size);
 }
+
+/* Custom responsive utilities for hamburger menu */
+@media (max-width: 767px) {
+  .mobile-only {
+    display: block !important;
+  }
+  .desktop-only {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .mobile-only {
+    display: none !important;
+  }
+  .desktop-only {
+    display: flex !important;
+  }
+}

@@ -15,11 +15,11 @@ export function Header({ currentView, onViewChange }: HeaderProps) {
   ];
 
   return (
-    <header className="bg-white border-b border-gray-200 px-4 py-3 sticky top-0 z-50">
+    <header className="bg-white border-b border-gray-200 px-3 sm:px-4 py-3 sticky top-0 z-50">
       <div className="flex items-center justify-between max-w-6xl mx-auto">
-        <div className="flex items-center space-x-8">
-          <h1 className="font-semibold text-lg">SportConnect</h1>
-          <nav className="hidden md:flex space-x-6">
+        <div className="flex items-center space-x-6 sm:space-x-12">
+          <h1 className="font-semibold text-base sm:text-lg">SportConnect</h1>
+          <nav className="desktop-only space-x-6">
             {navItems.map((item) => (
               <button
                 key={item.label}
@@ -35,10 +35,10 @@ export function Header({ currentView, onViewChange }: HeaderProps) {
             ))}
           </nav>
         </div>
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-2 sm:space-x-3">
           <Button
             onClick={() => onViewChange('create')}
-            className="hidden sm:flex bg-black text-white hover:bg-gray-800"
+            className="desktop-only bg-black text-white hover:bg-gray-800"
           >
             + Kreiraj Oglas
           </Button>
@@ -46,21 +46,21 @@ export function Header({ currentView, onViewChange }: HeaderProps) {
             variant="ghost" 
             size="sm"
             onClick={() => onViewChange('notifications')}
-            className="relative"
+            className="desktop-only relative p-2 h-auto"
           >
             <Bell className="w-5 h-5" />
             <span className="sr-only">Notifikacije</span>
           </Button>
           <button 
             onClick={() => onViewChange('profile')}
-            className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center hover:bg-gray-400 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary"
+            className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center hover:bg-gray-400 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary flex-shrink-0"
             aria-label="Profil"
           >
             <User size={16} />
           </button>
-          {/* Hamburger menu for mobile */}
+          {/* Hamburger menu for mobile - only visible on screens smaller than 768px */}
           <button
-            className="md:hidden ml-2 p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary hover:bg-gray-100 transition-colors"
+            className="mobile-only p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary hover:bg-gray-100 transition-colors flex-shrink-0"
             onClick={() => setMenuOpen((open) => !open)}
             aria-label={menuOpen ? "Zatvori meni" : "Otvori meni"}
           >
@@ -81,7 +81,7 @@ export function Header({ currentView, onViewChange }: HeaderProps) {
       </div>
       {/* Mobile menu */}
       {menuOpen && (
-        <nav className="md:hidden bg-white border-t border-gray-200 px-4 py-3 flex flex-col space-y-2 shadow-lg">
+        <nav className="mobile-only bg-white border-t border-gray-200 px-4 py-3 flex flex-col space-y-2 shadow-lg">
           {navItems.map((item) => (
             <button
               key={item.label}

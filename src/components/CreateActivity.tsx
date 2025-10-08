@@ -61,17 +61,9 @@ export function CreateActivity({ onBack, onCreateActivity }: CreateActivityProps
     <div className="max-w-2xl mx-auto px-4 py-6">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-medium">Kreiraj Novi Oglas</h2>
-        <div className="flex gap-2">
-          <Button variant="outline" onClick={onBack}>
-            Dashboard
-          </Button>
-          <Button variant="outline" onClick={onBack}>
-            Kreiraj Oglas
-          </Button>
-          <Button variant="outline" onClick={onBack}>
-            Profil
-          </Button>
-        </div>
+        <Button variant="outline" onClick={onBack}>
+          Nazad
+        </Button>
       </div>
 
       <Card className="p-6">
