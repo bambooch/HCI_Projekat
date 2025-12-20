@@ -7,19 +7,20 @@ import { Textarea } from './ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Activity } from '../types';
 
-interface CreateActivityProps {
+interface EditActivityProps {
+  activity: Activity;
   onBack: () => void;
-  onCreateActivity?: (activity: Activity) => void;
+  onSaveActivity: (activity: Activity) => void;
 }
 
-export function CreateActivity({ onBack, onCreateActivity }: CreateActivityProps) {
+export function EditActivity({ activity, onBack, onSaveActivity }: EditActivityProps) {
   const [formData, setFormData] = useState({
-    sport: '',
-    location: '',
-    date: '',
-    time: '',
-    maxParticipants: '',
-    description: '',
+    sport: activity.sport || '',
+    location: activity.location || '',
+    date: activity.date || '',
+    time: activity.time || '',
+    maxParticipants: activity.maxParticipants?.toString() || '',
+    description: activity.description || '',
   });
   const [successMessage, setSuccessMessage] = useState('');
 
@@ -35,43 +36,32 @@ export function CreateActivity({ onBack, onCreateActivity }: CreateActivityProps
       return;
     }
 
-    const newActivity = {
-      ...formData,
-      id: Date.now().toString(),
-      title: `${formData.sport} - Nova aktivnost`,
-      participants: 1,
+    const updatedActivity: Activity = {
+      ...activity,
+      sport: formData.sport,
+      location: formData.location,
+      date: formData.date,
+      time: formData.time,
       maxParticipants: parseInt(formData.maxParticipants),
-      organizer: { id: '1', name: 'Vi', sports: [], organizedActivities: 0 },
-      participantsList: [],
+      description: formData.description,
+      title: `${formData.sport} - ${activity.title.split(' - ')[1] || 'Nova aktivnost'}`,
       sportTag: formData.sport,
     };
 
     // Get existing activities from localStorage
-    const existingActivities = JSON.parse(localStorage.getItem('activities') || '[]');
+    const savedActivities = JSON.parse(localStorage.getItem('activities') || '[]');
     
-    // Add new activity to the list
-    const updatedActivities = [...existingActivities, newActivity];
+    // Update the activity in the list
+    const updatedActivities = savedActivities.map((a: Activity) =>
+      a.id === activity.id ? updatedActivity : a
+    );
     
     // Save to localStorage
     localStorage.setItem('activities', JSON.stringify(updatedActivities));
 
-    // Also call onCreateActivity if provided (for backward compatibility)
-    if (onCreateActivity) {
-      onCreateActivity(newActivity);
-    }
-
-    setSuccessMessage('Oglas je uspješno kreiran!');
+    onSaveActivity(updatedActivity);
+    setSuccessMessage('Oglas je uspješno ažuriran!');
     
-    // Reset form
-    setFormData({
-      sport: '',
-      location: '',
-      date: '',
-      time: '',
-      maxParticipants: '',
-      description: '',
-    });
-
     // Redirect after 1.5 seconds
     setTimeout(() => {
       onBack();
@@ -97,14 +87,14 @@ export function CreateActivity({ onBack, onCreateActivity }: CreateActivityProps
   return (
     <div className="max-w-2xl mx-auto px-4 py-6">
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-medium">Kreiraj Novi Oglas</h2>
+        <h2 className="text-xl font-medium">Uredi Oglas</h2>
         <Button variant="outline" onClick={onBack}>
           Nazad
         </Button>
       </div>
 
       <Card className="p-6">
-        <p className="text-gray-600 mb-6">Popuni formu da kreiraš oglas za sportsku aktivnost</p>
+        <p className="text-gray-600 mb-6">Uredi detalje sportske aktivnosti</p>
 
         {successMessage && (
           <div className="mb-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
@@ -157,7 +147,7 @@ export function CreateActivity({ onBack, onCreateActivity }: CreateActivityProps
                 }}
                 onInvalid={(e) => {
                   if (e.target instanceof HTMLInputElement && e.target.validity.rangeUnderflow) {
-                    e.target.setCustomValidity(`Datum mora biti ${new Date(today).toLocaleDateString('bs-BA')} ili kasnije.`);
+                    e.target.setCustomValidity(`Datum mora biti ${new Date(today).toLocaleDateString('bs-BA')} ili senare.`);
                   }
                 }}
                 onInput={(e) => {
@@ -210,7 +200,7 @@ export function CreateActivity({ onBack, onCreateActivity }: CreateActivityProps
               Otkaži
             </Button>
             <Button type="submit" className="flex-1 bg-black hover:bg-gray-800 text-white">
-              Objavi Oglas
+              Sačuvaj Promjene
             </Button>
           </div>
         </form>

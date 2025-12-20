@@ -16,9 +16,9 @@ export function Header({ currentView, onViewChange }: HeaderProps) {
 
   return (
     <header className="bg-white border-b border-gray-200 px-3 sm:px-4 py-3 sticky top-0 z-50">
-      <div className="flex items-center justify-between max-w-6xl mx-auto">
-        <div className="flex items-center space-x-6 sm:space-x-12">
-          <h1 className="font-semibold text-base sm:text-lg">SportConnect</h1>
+      <div className="flex items-center justify-between w-full">
+        <div className="flex items-center space-x-6 sm:space-x-12 flex-1">
+          <h1 className="font-semibold text-base sm:text-lg whitespace-nowrap">SportConnect</h1>
           <nav className="desktop-only space-x-6">
             {navItems.map((item) => (
               <button
@@ -35,7 +35,7 @@ export function Header({ currentView, onViewChange }: HeaderProps) {
             ))}
           </nav>
         </div>
-        <div className="flex items-center space-x-2 sm:space-x-3">
+        <div className="flex items-center space-x-2 sm:space-x-3 flex-shrink-0">
           <Button
             onClick={() => onViewChange('create')}
             className="desktop-only bg-black text-white hover:bg-gray-800"

@@ -2,7 +2,7 @@ import React from 'react';
 import { Card } from './ui/card';
 import { Button } from './ui/button';
 import { Badge } from './ui/badge';
-import { MapPin, Calendar, Clock, Users } from 'lucide-react';
+import { MapPin, Calendar, Clock, Users, Edit2, Trash2 } from 'lucide-react';
 import { Activity } from '../types';
 
 interface ActivityCardProps {
@@ -10,9 +10,12 @@ interface ActivityCardProps {
   onViewDetails: (activity: Activity) => void;
   onJoinActivity: (activityId: string) => void;
   isJoined?: boolean;
+  onEditActivity?: (activity: Activity) => void;
+  onDeleteActivity?: (activityId: string) => void;
+  isOwner?: boolean;
 }
 
-export function ActivityCard({ activity, onViewDetails, onJoinActivity, isJoined = false }: ActivityCardProps) {
+export function ActivityCard({ activity, onViewDetails, onJoinActivity, isJoined = false, onEditActivity, onDeleteActivity, isOwner = false }: ActivityCardProps) {
   return (
     <Card className="p-4 hover:shadow-md transition-shadow">
       <div className="flex justify-between items-start mb-3">
@@ -43,6 +46,36 @@ export function ActivityCard({ activity, onViewDetails, onJoinActivity, isJoined
             </div>
           </div>
         </div>
+        
+        {/* Owner action buttons */}
+        {isOwner && (
+          <div className="flex gap-2 ml-2">
+            {onEditActivity && (
+              <button
+                onClick={() => onEditActivity(activity)}
+                className="p-1.5 hover:bg-blue-100 rounded transition-colors"
+                aria-label="Uredi aktivnost"
+                title="Uredi aktivnost"
+              >
+                <Edit2 size={18} className="text-blue-600" />
+              </button>
+            )}
+            {onDeleteActivity && (
+              <button
+                onClick={() => {
+                  if (confirm('Da li ste sigurni da želite obrisati ovu aktivnost?')) {
+                    onDeleteActivity(activity.id);
+                  }
+                }}
+                className="p-1.5 hover:bg-red-100 rounded transition-colors"
+                aria-label="Obriši aktivnost"
+                title="Obriši aktivnost"
+              >
+                <Trash2 size={18} className="text-red-600" />
+              </button>
+            )}
+          </div>
+        )}
       </div>
 
       <div className="flex gap-2">

@@ -40,4 +40,4 @@ export interface Notification {
   activityTitle?: string;
 }
 
-export type ViewType = 'dashboard' | 'create' | 'activity' | 'profile' | 'notifications';
+export type ViewType = 'dashboard' | 'create' | 'activity' | 'edit' | 'profile' | 'notifications';

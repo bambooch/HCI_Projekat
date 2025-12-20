@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { FilterBar } from './FilterBar';
 import { ActivityCard } from './ActivityCard';
 import { Activity } from '../types';
@@ -6,17 +6,29 @@ import { mockActivities } from '../data/mockData';
 
 interface DashboardProps {
   onViewActivity: (activity: Activity) => void;
+  onEditActivity?: (activity: Activity) => void;
 }
 
-export function Dashboard({ onViewActivity }: DashboardProps) {
+export function Dashboard({ onViewActivity, onEditActivity }: DashboardProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedSport, setSelectedSport] = useState('Svi sportovi');
   const [selectedLocation, setSelectedLocation] = useState('Sve lokacije');
   const [selectedDate, setSelectedDate] = useState('');
   const [joinedActivities, setJoinedActivities] = useState<Set<string>>(new Set());
+  const [allActivities, setAllActivities] = useState<Activity[]>(mockActivities);
+
+  // Load activities from localStorage on mount and when component updates
+  useEffect(() => {
+    const savedActivities = JSON.parse(localStorage.getItem('activities') || '[]');
+    if (savedActivities.length > 0) {
+      setAllActivities([...mockActivities, ...savedActivities]);
+    } else {
+      setAllActivities(mockActivities);
+    }
+  }, []);
 
   const filteredActivities = useMemo(() => {
-    return mockActivities.filter((activity) => {
+    return allActivities.filter((activity) => {
       const matchesSearch = activity.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                            activity.description.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesSport = selectedSport === 'Svi sportovi' || activity.sport === selectedSport;
@@ -26,7 +38,7 @@ export function Dashboard({ onViewActivity }: DashboardProps) {
 
       return matchesSearch && matchesSport && matchesLocation && matchesDate;
     });
-  }, [searchTerm, selectedSport, selectedLocation, selectedDate]);
+  }, [searchTerm, selectedSport, selectedLocation, selectedDate, allActivities]);
 
   const handleJoinActivity = (activityId: string) => {
     const newJoined = new Set(joinedActivities);
@@ -36,6 +48,22 @@ export function Dashboard({ onViewActivity }: DashboardProps) {
       newJoined.add(activityId);
     }
     setJoinedActivities(newJoined);
+  };
+
+  const handleDeleteActivity = (activityId: string) => {
+    // Remove from localStorage if it exists there
+    const savedActivities = JSON.parse(localStorage.getItem('activities') || '[]');
+    const updatedActivities = savedActivities.filter((a: Activity) => a.id !== activityId);
+    localStorage.setItem('activities', JSON.stringify(updatedActivities));
+    
+    // Remove from state
+    setAllActivities(allActivities.filter(a => a.id !== activityId));
+  };
+
+  const handleEditActivity = (activity: Activity) => {
+    if (onEditActivity) {
+      onEditActivity(activity);
+    }
   };
 
   return (
@@ -61,6 +89,9 @@ export function Dashboard({ onViewActivity }: DashboardProps) {
             onViewDetails={onViewActivity}
             onJoinActivity={handleJoinActivity}
             isJoined={joinedActivities.has(activity.id)}
+            onEditActivity={handleEditActivity}
+            onDeleteActivity={handleDeleteActivity}
+            isOwner={activity.organizer.name === 'Vi'}
           />
         ))}
       </div>
