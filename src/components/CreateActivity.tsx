@@ -22,16 +22,92 @@ export function CreateActivity({ onBack, onCreateActivity }: CreateActivityProps
     description: '',
   });
   const [successMessage, setSuccessMessage] = useState('');
+  const [errors, setErrors] = useState({
+    sport: '',
+    location: '',
+    date: '',
+    time: '',
+    maxParticipants: '',
+    description: '',
+  });
 
   const sports = ['Fudbal', 'Košarka', 'Tenis', 'Odbojka', 'Trčanje', 'Plivanje'];
 
   // Get today's date in YYYY-MM-DD format to prevent selection of past dates
   const today = new Date().toISOString().split('T')[0];
 
+  const validateForm = () => {
+    const newErrors = {
+      sport: '',
+      location: '',
+      date: '',
+      time: '',
+      maxParticipants: '',
+      description: '',
+    };
+
+    let isValid = true;
+
+    // Validate sport
+    if (!formData.sport) {
+      newErrors.sport = 'Tip sporta je obavezan.';
+      isValid = false;
+    }
+
+    // Validate location
+    if (!formData.location.trim()) {
+      newErrors.location = 'Lokacija je obavezna.';
+      isValid = false;
+    } else if (formData.location.trim().length < 3) {
+      newErrors.location = 'Lokacija mora imati najmanje 3 karaktera.';
+      isValid = false;
+    }
+
+    // Validate date
+    if (!formData.date) {
+      newErrors.date = 'Datum je obavezan.';
+      isValid = false;
+    } else if (new Date(formData.date) < new Date(today)) {
+      newErrors.date = `Datum mora biti ${new Date(today).toLocaleDateString('bs-BA')} ili kasnije.`;
+      isValid = false;
+    }
+
+    // Validate time
+    if (!formData.time) {
+      newErrors.time = 'Vrijeme je obavezno.';
+      isValid = false;
+    }
+
+    // Validate maxParticipants
+    if (!formData.maxParticipants) {
+      newErrors.maxParticipants = 'Broj igrača je obavezan.';
+      isValid = false;
+    } else {
+      const num = parseInt(formData.maxParticipants);
+      if (isNaN(num) || num < 2) {
+        newErrors.maxParticipants = 'Broj igrača mora biti najmanje 2.';
+        isValid = false;
+      } else if (num > 100) {
+        newErrors.maxParticipants = 'Broj igrača ne može biti veći od 100.';
+        isValid = false;
+      }
+    }
+
+    // Validate description (optional, but check if too long)
+    if (formData.description && formData.description.length > 500) {
+      newErrors.description = 'Opis ne može biti duži od 500 karaktera.';
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.sport || !formData.location || !formData.date || !formData.time || !formData.maxParticipants) {
-      alert('Molimo popunite sva obavezna polja.');
+    
+    if (!validateForm()) {
+      alert('Molimo pregledajte i ispravite greške u formi. Polja sa greškama su označena crvenom bojom.');
       return;
     }
 
@@ -80,6 +156,10 @@ export function CreateActivity({ onBack, onCreateActivity }: CreateActivityProps
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({ ...prev, [field]: value }));
+    // Clear error for this field when user starts typing
+    if (errors[field as keyof typeof errors]) {
+      setErrors(prev => ({ ...prev, [field]: '' }));
+    }
   };
 
   const validateDate = (input: HTMLInputElement) => {
@@ -114,9 +194,9 @@ export function CreateActivity({ onBack, onCreateActivity }: CreateActivityProps
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <Label htmlFor="sport">Tip Sporta</Label>
+            <Label htmlFor="sport">Tip Sporta *</Label>
             <Select value={formData.sport} onValueChange={handleSportChange}>
-              <SelectTrigger className="mt-1">
+              <SelectTrigger className={`mt-1 ${errors.sport ? 'border-red-500 focus:ring-red-500' : ''}`}>
                 <SelectValue placeholder="Izaberi sport" />
               </SelectTrigger>
               <SelectContent>
@@ -127,22 +207,24 @@ export function CreateActivity({ onBack, onCreateActivity }: CreateActivityProps
                 ))}
               </SelectContent>
             </Select>
+            {errors.sport && <p style={{color: '#dc2626'}} className="font-medium text-sm mt-1">{errors.sport}</p>}
           </div>
 
           <div>
-            <Label htmlFor="location">Lokacija</Label>
+            <Label htmlFor="location">Lokacija *</Label>
             <Input
               id="location"
               placeholder="Unesite lokaciju"
               value={formData.location}
               onChange={(e) => handleInputChange('location', e.target.value)}
-              className="mt-1"
+              className={`mt-1 ${errors.location ? 'border-red-500 focus:ring-red-500' : ''}`}
             />
+            {errors.location && <p style={{color: '#dc2626'}} className="font-medium text-sm mt-1">{errors.location}</p>}
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <Label htmlFor="date">Datum</Label>
+              <Label htmlFor="date">Datum *</Label>
               <Input
                 id="date"
                 type="date"
@@ -166,31 +248,36 @@ export function CreateActivity({ onBack, onCreateActivity }: CreateActivityProps
                     validateDate(e.target);
                   }
                 }}
-                className="mt-1"
+                className={`mt-1 ${errors.date ? 'border-red-500 focus:ring-red-500' : ''}`}
               />
+              {errors.date && <p style={{color: '#dc2626'}} className="font-medium text-sm mt-1">{errors.date}</p>}
             </div>
             <div>
-              <Label htmlFor="time">Vrijeme</Label>
+              <Label htmlFor="time">Vrijeme *</Label>
               <Input
                 id="time"
                 type="time"
                 value={formData.time}
                 onChange={(e) => handleInputChange('time', e.target.value)}
-                className="mt-1"
+                className={`mt-1 ${errors.time ? 'border-red-500 focus:ring-red-500' : ''}`}
               />
+              {errors.time && <p style={{color: '#dc2626'}} className="font-medium text-sm mt-1">{errors.time}</p>}
             </div>
           </div>
 
           <div>
-            <Label htmlFor="maxParticipants">Potreban broj igrača</Label>
+            <Label htmlFor="maxParticipants">Potreban broj igrača *</Label>
             <Input
               id="maxParticipants"
               type="number"
+              min="2"
+              max="100"
               placeholder="Unesite broj igrača"
               value={formData.maxParticipants}
               onChange={(e) => handleInputChange('maxParticipants', e.target.value)}
-              className="mt-1"
+              className={`mt-1 ${errors.maxParticipants ? 'border-red-500 focus:ring-red-500' : ''}`}
             />
+            {errors.maxParticipants && <p style={{color: '#dc2626'}} className="font-medium text-sm mt-1">{errors.maxParticipants}</p>}
           </div>
 
           <div>
@@ -201,8 +288,13 @@ export function CreateActivity({ onBack, onCreateActivity }: CreateActivityProps
               rows={4}
               value={formData.description}
               onChange={(e) => handleInputChange('description', e.target.value)}
-              className="mt-1"
+              className={`mt-1 ${errors.description ? 'border-red-500 focus:ring-red-500' : ''}`}
+              maxLength={500}
             />
+            {errors.description && <p style={{color: '#dc2626'}} className="font-medium text-sm mt-1">{errors.description}</p>}
+            {formData.description && !errors.description && (
+              <p className="text-gray-500 text-sm mt-1">{formData.description.length}/500 karaktera</p>
+            )}
           </div>
 
           <div className="flex gap-3 pt-4">
