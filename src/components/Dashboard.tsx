@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import { toast } from 'sonner';
 import { FilterBar } from './FilterBar';
 import { ActivityCard } from './ActivityCard';
 import { Activity } from '../types';
@@ -51,13 +52,47 @@ export function Dashboard({ onViewActivity, onEditActivity }: DashboardProps) {
   };
 
   const handleDeleteActivity = (activityId: string) => {
-    // Remove from localStorage if it exists there
+    // Find the activity before deleting
+    const activityToDelete = allActivities.find(a => a.id === activityId);
+    
+    if (!activityToDelete) return;
+    
+    // Store the current saved activities before deletion
     const savedActivities = JSON.parse(localStorage.getItem('activities') || '[]');
+    const wasInStorage = savedActivities.some((a: Activity) => a.id === activityId);
+    
+    // Remove from localStorage if it exists there
     const updatedActivities = savedActivities.filter((a: Activity) => a.id !== activityId);
     localStorage.setItem('activities', JSON.stringify(updatedActivities));
     
     // Remove from state
     setAllActivities(allActivities.filter(a => a.id !== activityId));
+    
+    // Show toast with undo option
+    toast.success('Aktivnost je obrisana', {
+      description: activityToDelete.title,
+      duration: 10000, // 10 seconds
+      action: {
+        label: 'Vrati',
+        onClick: () => {
+          // Restore the activity
+          if (wasInStorage) {
+            const currentSaved = JSON.parse(localStorage.getItem('activities') || '[]');
+            localStorage.setItem('activities', JSON.stringify([...currentSaved, activityToDelete]));
+          }
+          
+          setAllActivities(prevActivities => {
+            // Check if it already exists to avoid duplicates
+            if (prevActivities.some(a => a.id === activityId)) {
+              return prevActivities;
+            }
+            return [...prevActivities, activityToDelete];
+          });
+          
+          toast.success('Aktivnost je vraćena');
+        },
+      },
+    });
   };
 
   const handleEditActivity = (activity: Activity) => {
