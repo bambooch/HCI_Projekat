@@ -166,12 +166,7 @@ export function EditActivity({ activity, onBack, onSaveActivity }: EditActivityP
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-medium">Uredi Oglas</h2>
-        <Button variant="outline" onClick={onBack}>
-          Nazad
-        </Button>
-      </div>
+      <h2 className="text-xl font-medium mb-6">Uredi Oglas</h2>
 
       <Card className="p-6">
         <p className="text-gray-600 mb-6">Uredi detalje sportske aktivnosti</p>

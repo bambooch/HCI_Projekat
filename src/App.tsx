@@ -86,9 +86,7 @@ export default function App() {
   return (
     <div className="min-h-screen bg-gray-50">
       <Toaster position="bottom-right" richColors />
-      {currentView !== 'activity' && currentView !== 'notifications' && currentView !== 'edit' && (
-        <Header currentView={currentView} onViewChange={handleViewChange} />
-      )}
+      <Header currentView={currentView} onViewChange={handleViewChange} />
       {renderCurrentView()}
     </div>
   );

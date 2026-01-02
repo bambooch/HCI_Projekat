@@ -176,12 +176,7 @@ export function CreateActivity({ onBack, onCreateActivity }: CreateActivityProps
 
   return (
     <div className="max-w-2xl mx-auto px-4 py-6">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-medium">Kreiraj Novi Oglas</h2>
-        <Button variant="outline" onClick={onBack}>
-          Nazad
-        </Button>
-      </div>
+      <h2 className="text-xl font-medium mb-6">Kreiraj Novi Oglas</h2>
 
       <Card className="p-6">
         <p className="text-gray-600 mb-6">Popuni formu da kreiraš oglas za sportsku aktivnost</p>

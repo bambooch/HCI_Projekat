@@ -39,12 +39,7 @@ export function UserProfile({ onBack }: UserProfileProps) {
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-6">
-      <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl font-medium">Profil</h2>
-        <Button variant="outline" onClick={onBack}>
-          Nazad na Dashboard
-        </Button>
-      </div>
+      <h2 className="text-xl font-medium mb-6">Profil</h2>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Profile Info */}

@@ -134,46 +134,29 @@ export function Notifications({ onBack }: NotificationsProps) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-8">
-      <div className="bg-white border-b border-gray-200 px-4 py-4 sticky top-0 z-10">
-        <div className="max-w-4xl mx-auto">
-          <div className="flex items-center justify-between mb-2">
-            <div className="flex items-center space-x-3">
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onBack}
-                className="p-2"
-              >
-                <ArrowLeft className="w-5 h-5" />
-              </Button>
-              <div>
-                <h1 className="text-2xl font-bold flex items-center space-x-2">
-                  <Bell className="w-6 h-6" />
-                  <span>Notifikacije</span>
-                </h1>
-                {unreadCount > 0 && (
-                  <p className="text-sm text-gray-600">
-                    {unreadCount} {unreadCount === 1 ? 'nova notifikacija' : 'novih notifikacija'}
-                  </p>
-                )}
-              </div>
-            </div>
-            {unreadCount > 0 && (
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={markAllAsRead}
-              >
-                Označi sve kao pročitano
-              </Button>
-            )}
-          </div>
-        </div>
+    <div className="max-w-4xl mx-auto px-4 py-6">
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-xl font-medium flex items-center space-x-2">
+          <Bell className="w-6 h-6" />
+          <span>Notifikacije</span>
+          {unreadCount > 0 && (
+            <Badge variant="destructive" className="ml-2">
+              {unreadCount}
+            </Badge>
+          )}
+        </h2>
+        {unreadCount > 0 && (
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={markAllAsRead}
+          >
+            Označi sve kao pročitano
+          </Button>
+        )}
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 mt-6">
-        <div className="space-y-3">
+      <div className="space-y-3">
           {notifications.map((notification) => (
             <Card
               key={notification.id}
@@ -218,7 +201,6 @@ export function Notifications({ onBack }: NotificationsProps) {
               </CardContent>
             </Card>
           ))}
-        </div>
 
         {notifications.length === 0 && (
           <div className="text-center py-12">
