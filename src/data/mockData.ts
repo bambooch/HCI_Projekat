@@ -95,10 +95,18 @@ const generateActivities = (): Activity[] => {
     const dateString = `${day}.${month}.${year}`;
     
     const maxParticipants = sport === 'Fudbal' ? 22 : sport === 'Košarka' ? 10 : sport === 'Odbojka' ? 12 : sport === 'Trčanje' ? 20 : sport === 'Plivanje' ? 15 : 8;
-    const participants = Math.floor(Math.random() * (maxParticipants - 2)) + 2;
     
     const organizer = mockUsers[organizerIndex];
-    const participantsList = [organizer, mockUsers[(organizerIndex + 1) % mockUsers.length]];
+    // Generate a varied number of participants (2-4 people)
+    const numParticipants = Math.min(Math.floor(Math.random() * 3) + 2, mockUsers.length);
+    const participantsList = [organizer];
+    for (let j = 1; j < numParticipants; j++) {
+      const participantIndex = (organizerIndex + j) % mockUsers.length;
+      if (!participantsList.some(p => p.id === mockUsers[participantIndex].id)) {
+        participantsList.push(mockUsers[participantIndex]);
+      }
+    }
+    const participants = participantsList.length;
     
     activities.push({
       id: i.toString(),

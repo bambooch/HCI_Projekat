@@ -106,7 +106,7 @@ export function ActivityDetails({ activity, onBack }: ActivityDetailsProps) {
           {/* Participants */}
           <Card className="p-6">
             <h3 className="font-medium mb-4">
-              Učesnici ({activity.participants}/{activity.maxParticipants})
+              Učesnici ({activity.participantsList.length}/{activity.maxParticipants})
             </h3>
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
               {activity.participantsList.map((participant) => (
