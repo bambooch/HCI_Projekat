@@ -27,92 +27,99 @@ export const mockUsers: User[] = [
   },
 ];
 
-export const mockActivities: Activity[] = [
-  {
-    id: '1',
-    title: 'Fudbal - Večernja utakmica',
-    sport: 'Fudbal',
-    location: 'Sportski centar "Partizan"',
-    date: '15.12.2024',
-    time: '19:00',
-    participants: 8,
-    maxParticipants: 22,
-    description: 'Pozivamo sve ljubitelje fudbala na večernju utakmicu! Potrebno nam je još 4 igrača za kompletnu ekipu. Utakmica će se igrati na travnatom terenu sa reflektorima. Donesite svoju opremu i dobro raspoloženje!',
-    organizer: mockUsers[0],
-    participantsList: [mockUsers[0], mockUsers[1], mockUsers[2]],
-    sportTag: 'Fudbal',
-  },
-  {
-    id: '2',
-    title: 'Košarka - Jutarnji trening',
-    sport: 'Košarka',
-    location: 'Hala "Pinki"',
-    date: '16.12.2024',
-    time: '08:00',
-    participants: 6,
-    maxParticipants: 10,
-    description: 'Jutarnji trening košarke za sve nivoe iskustva. Fokus na osnovne tehnike i kondiciju.',
-    organizer: mockUsers[2],
-    participantsList: [mockUsers[2], mockUsers[0]],
-    sportTag: 'Košarka',
-  },
-  {
-    id: '3',
-    title: 'Tenis - Turnir parova',
-    sport: 'Tenis',
-    location: 'Teniski klub "Novak"',
-    date: '17.12.2024',
-    time: '14:00',
-    participants: 4,
-    maxParticipants: 8,
-    description: 'Turnir u parovima za rekreativce. Prijave su otvorene!',
-    organizer: mockUsers[1],
-    participantsList: [mockUsers[1], mockUsers[3]],
-    sportTag: 'Tenis',
-  },
-  {
-    id: '4',
-    title: 'Odbojka - Rekreativno',
-    sport: 'Odbojka',
-    location: 'Plata "Ada Ciganlija"',
-    date: '18.12.2024',
-    time: '16:00',
-    participants: 10,
-    maxParticipants: 12,
-    description: 'Opuštena igra odbojke na pijesku. Sve dobrodošle!',
-    organizer: mockUsers[3],
-    participantsList: [mockUsers[3], mockUsers[1], mockUsers[0], mockUsers[2]],
-    sportTag: 'Odbojka',
-  },
-  {
-    id: '5',
-    title: 'Trčanje - Grupno',
-    sport: 'Trčanje',
-    location: 'Park "Kalemegdan"',
-    date: '19.12.2024',
-    time: '07:00',
-    participants: 15,
-    maxParticipants: 20,
-    description: 'Jutarnje grupno trčanje kroz park. Tempo prilagođen svima.',
-    organizer: mockUsers[2],
-    participantsList: [mockUsers[2], mockUsers[0], mockUsers[1]],
-    sportTag: 'Trčanje',
-  },
-  {
-    id: '6',
-    title: 'Plivanje - Jutarnje',
-    sport: 'Plivanje',
-    location: 'Bazen "25. Maj"',
-    date: '20.12.2024',
-    time: '06:30',
-    participants: 8,
-    maxParticipants: 15,
-    description: 'Jutarnji trening plivanja. Tehnike i kondicija.',
-    organizer: mockUsers[3],
-    participantsList: [mockUsers[3], mockUsers[1]],
-    sportTag: 'Plivanje',
-  },
-];
+const generateActivities = (): Activity[] => {
+  const sports = ['Fudbal', 'Košarka', 'Tenis', 'Odbojka', 'Trčanje', 'Plivanje'];
+  const locations = [
+    'Sportski centar "Partizan"',
+    'Hala "Pinki"',
+    'Teniski klub "Novak"',
+    'Plaža "Ada Ciganlija"',
+    'Park "Kalemegdan"',
+    'Bazen "25. Maj"',
+    'Sportski centar "Tašmajdan"',
+    'Hala "Pionir"',
+    'Arena "Kombank"',
+    'Park "Ušće"',
+    'Sportski centar "11. April"',
+    'Bazen "Olymp"',
+    'Teniski klub "Dril"',
+    'Plaža "Savski kej"',
+    'Stadion "Obilić"',
+  ];
+  
+  const titles = [
+    ['Fudbal - Večernja utakmica', 'Fudbal - Jutarnja liga', 'Fudbal - Vikend turnir', 'Fudbal - Prijateljska utakmica', 'Fudbal - Trening za početnike'],
+    ['Košarka - Jutarnji trening', 'Košarka - Popodnevna liga', 'Košarka - 3x3 turnir', 'Košarka - Rekreativna igra', 'Košarka - Veče kosarke'],
+    ['Tenis - Turnir parova', 'Tenis - Singles takmičenje', 'Tenis - Jutarnji trening', 'Tenis - Rekreativno', 'Tenis - Advanced tehnika'],
+    ['Odbojka - Rekreativno', 'Odbojka - Plaža turnir', 'Odbojka - Liga vikenda', 'Odbojka - Trening za napredne', 'Odbojka - Otvorena igra'],
+    ['Trčanje - Grupno', 'Trčanje - Maraton priprema', 'Trčanje - Sprint trening', 'Trčanje - Jutarnja šetnja', 'Trčanje - Trail running'],
+    ['Plivanje - Jutarnje', 'Plivanje - Večernji trening', 'Plivanje - Tehnika plivanja', 'Plivanje - Kondicija', 'Plivanje - Masters grupa'],
+  ];
+  
+  const descriptions = [
+    'Pozivamo sve ljubitelje sporta na odličnu aktivnost! Dođite i uživajte u igri.',
+    'Trening prilagođen svim nivoima iskustva. Svi su dobrodošli!',
+    'Organizujemo sjajnu aktivnost za sve zainteresovane. Pridružite nam se!',
+    'Rekreativna igra u opuštenoj atmosferi. Donesite dobro raspoloženje!',
+    'Profesionalni trening sa iskusnim trenerom. Unapredite svoje veštine!',
+    'Zabavna aktivnost za sve uzraste. Porodice su dobrodošle!',
+    'Takmičarski duh i sportska igra. Budite deo tima!',
+    'Jutarnja energija i motivacija uz sport. Počnite dan kako treba!',
+    'Večernja opuštajuća aktivnost. Odličan način da završite dan!',
+    'Grupna aktivnost sa sjajnom atmosferom. Upoznajte nove ljude!',
+  ];
+  
+  const times = ['06:00', '06:30', '07:00', '08:00', '09:00', '10:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'];
+  
+  const activities: Activity[] = [];
+  
+  for (let i = 1; i <= 65; i++) {
+    const sportIndex = (i - 1) % sports.length;
+    const sport = sports[sportIndex];
+    const titleOptions = titles[sportIndex];
+    const title = titleOptions[(i - 1) % titleOptions.length];
+    const location = locations[(i - 1) % locations.length];
+    const description = descriptions[(i - 1) % descriptions.length];
+    const time = times[(i - 1) % times.length];
+    const organizerIndex = (i - 1) % mockUsers.length;
+    
+    // Generate dates from December 2024 through February 2026
+    const baseDate = new Date(2024, 11, 15); // December 15, 2024
+    const daysToAdd = Math.floor((i - 1) * 3); // Spread activities over time
+    const activityDate = new Date(baseDate);
+    activityDate.setDate(baseDate.getDate() + daysToAdd);
+    
+    const day = activityDate.getDate().toString().padStart(2, '0');
+    const month = (activityDate.getMonth() + 1).toString().padStart(2, '0');
+    const year = activityDate.getFullYear();
+    const dateString = `${day}.${month}.${year}`;
+    
+    const maxParticipants = sport === 'Fudbal' ? 22 : sport === 'Košarka' ? 10 : sport === 'Odbojka' ? 12 : sport === 'Trčanje' ? 20 : sport === 'Plivanje' ? 15 : 8;
+    const participants = Math.floor(Math.random() * (maxParticipants - 2)) + 2;
+    
+    const organizer = mockUsers[organizerIndex];
+    const participantsList = [organizer, mockUsers[(organizerIndex + 1) % mockUsers.length]];
+    
+    activities.push({
+      id: i.toString(),
+      title,
+      sport,
+      location,
+      date: dateString,
+      time,
+      participants,
+      maxParticipants,
+      description,
+      organizer,
+      participantsList,
+      sportTag: sport,
+    });
+  }
+  
+  return activities;
+};
+
+export const mockActivities: Activity[] = generateActivities();
 
 export const mockMessages: ChatMessage[] = [
   {
