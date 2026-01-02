@@ -24,10 +24,11 @@ export function Dashboard({ onViewActivity, onEditActivity }: DashboardProps) {
   const observerTarget = useRef<HTMLDivElement>(null);
 
   // Load activities from localStorage on mount and when component updates
+  // User-created activities appear first
   useEffect(() => {
     const savedActivities = JSON.parse(localStorage.getItem('activities') || '[]');
     if (savedActivities.length > 0) {
-      setAllActivities([...mockActivities, ...savedActivities]);
+      setAllActivities([...savedActivities, ...mockActivities]);
     } else {
       setAllActivities(mockActivities);
     }
